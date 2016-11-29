@@ -295,21 +295,17 @@ public class BookStoreHTTPMessageHandler extends AbstractHandler {
 	
 
 	@SuppressWarnings("unchecked")
-	private void getBooksInDemand(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void getBooksInDemand(HttpServletRequest request, HttpServletResponse response) throws IOException, BookStoreException {
 		byte[] serializedRequestContent = getSerializedRequestContent(request);
 
 		BookStoreResponse bookStoreResponse = new BookStoreResponse();
-
-		try {
-			myBookStore.getBooksInDemand();
-		} catch (BookStoreException ex) {
-			bookStoreResponse.setException(ex);
-		}
+		bookStoreResponse.setList(myBookStore.getBooksInDemand());
 
 		byte[] serializedResponseContent = serializer.get().serialize(bookStoreResponse);
 		response.getOutputStream().write(serializedResponseContent);
 	}
-
+	
+	
 	/**
 	 * Updates editor picks.
 	 *
